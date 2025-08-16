@@ -40,7 +40,8 @@ curl -fsSL "https://download.docker.com/linux/debian/gpg" | gpg --dearmor --yes 
 
 OR Download docker.gpg from `store.DockerMe.ir`
 ```bash
-curl -fsSL "https://store.dockerme.ir/Software/docker.gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+# curl -fsSL "https://store.dockerme.ir/Software/docker.gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+curl -fsSL "https://dockerme.ir/learn/tools/Software/docker.gpg" | sudo gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
 ```
 
 **NOTE:** if your servers are in Iran too, you should do this with an HTTP proxy; otherwise, you will get a 403 error.
@@ -58,6 +59,12 @@ If apt mirror repository, add this line instead. We are using mirror repository 
 ```bash
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://repo.mecan.ir/repository/debian-docker bookworm stable" > /etc/apt/sources.list.d/docker.list
 cat /etc/apt/sources.list.d/docker.list
+```
+َ**Ubuntu 24.04 (Noble Numbat)**
+```bash
+# echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu noble stable" | sudo tee /etc/apt/sources.list.d/docker.list
+# OR Mecan
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://repo.mecan.ir/repository/ubuntu-docker noble stable" | sudo tee /etc/apt/sources.list.d/docker.list
 ```
 
 Update cache repository and install containerd:
@@ -152,6 +159,7 @@ sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 ```
 
+
 Download the Google Cloud public signing key:
 ```bash
 # If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
@@ -165,7 +173,10 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | sudo gpg --
 curl -fsSL https://store.dockerme.ir/Software/Release_v30.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 curl -fsSL https://store.dockerme.ir/Software/Release_v31.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 curl -fsSL https://store.dockerme.ir/Software/Release_v32.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-curl -fsSL https://store.dockerme.ir/Software/Release_v33.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+# curl -fsSL https://store.dockerme.ir/Software/Release_v33.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+# Correct
+curl -fsSL https://dockerme.ir/tool/Software/Release_v33.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
 # Check gpg key
 sudo ls -alh /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
@@ -379,6 +390,7 @@ etcd:
       - "${master2_name}.${domain_name}"
       - "${master3_name}.${domain_name}"
 imageRepository: registry.k8s.io
+# imageRepository: k8s.mecan.ir
 kind: ClusterConfiguration
 kubernetesVersion: 1.30.5
 controlPlaneEndpoint: "${vip_api_name}.${domain_name}:6443"
